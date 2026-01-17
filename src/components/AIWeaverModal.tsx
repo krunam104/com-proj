@@ -103,7 +103,8 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
             });
 
             if (!response.ok) {
-                throw new Error('Out of thread error: Failed to connect to the Weaver.');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Out of thread error: Failed to connect to the Weaver.');
             }
 
             const data = await response.json();

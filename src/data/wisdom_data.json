@@ -1,0 +1,342 @@
+[
+    {
+        "id": "kalasin",
+        "name": "Kalasin",
+        "slogan": "Queen of Silk",
+        "description": "Home to the famous Pha Praewa silk, known as the 'Queen of Silk'. This intricate textile combines weaving and embroidery techniques unique to the Phu Thai ethnic group, traditionally worn as a shoulder cloth (Sabai).",
+        "silk_pattern": "Praewa Silk",
+        "technique": "Intricate embroidery-like weaving (Chok) & Jok",
+        "ai_tags": [
+            "Queen",
+            "Praewa",
+            "Red",
+            "Embroidery",
+            "Phu Thai"
+        ],
+        "image_url": "/images/silk/Kalasin1.png",
+        "video_url": "/video/1.Kalasin.mp4"
+    },
+    {
+        "id": "khon-kaen",
+        "name": "Khon Kaen",
+        "slogan": "The Mudmee Capital",
+        "description": "The center of the Isan silk trade and a World Craft City for Ikat (Mudmee). Khon Kaen silk is recognized for its sharp, precise patterns and the 'Kaen Koon' signature pattern which symbolizes the Golden Shower tree.",
+        "silk_pattern": "Kaen Koon Pattern",
+        "technique": "Mudmee (Ikat) & GI Standard",
+        "ai_tags": [
+            "Mudmee",
+            "GI",
+            "Yellow",
+            "Ikat",
+            "Trade Center"
+        ],
+        "image_url": "/images/silk/khonkaen1.png",
+        "video_url": "/video/2. Khaen Kaen.mp4"
+    },
+    {
+        "id": "nakhon-ratchasima",
+        "name": "Nakhon Ratchasima",
+        "slogan": "Gateway to Isan",
+        "description": "Also known as Korat, this province produces heavy, durable silk. The unique 'Hang Karok' technique uses twisted yarn to create a shimmering, two-tone effect, while the 'Korat Monogram' features the Korat cat.",
+        "silk_pattern": "Korat Monogram & Hang Karok",
+        "technique": "Twisted yarn (Hang Karok)",
+        "ai_tags": [
+            "Durable",
+            "Cat",
+            "Shimmering",
+            "Two-tone",
+            "Heavy Silk"
+        ],
+        "image_url": "/images/silk/korat1.png",
+        "video_url": "/video/6.Nakhon Ratchasima.mp4"
+    },
+    {
+        "id": "buriram",
+        "name": "Buriram",
+        "slogan": "Volcanic Land",
+        "description": "Famous for 'Phu Akkani' or volcanic soil-dyed fabric. Locals use the iron-rich soil from extinct volcanoes to dye cotton and silk, resulting in a beautiful, soft terracotta orange hue representing the land's spirit.",
+        "silk_pattern": "Phu Akkani (Volcanic Soil Dye)",
+        "technique": "Natural Dyeing with Volcanic Soil",
+        "ai_tags": [
+            "Volcano",
+            "Natural Dye",
+            "Orange",
+            "Terracotta",
+            "Soft"
+        ],
+        "image_url": "/images/silk/burirum1.png",
+        "video_url": "/video/20. Buriram.mp4"
+    },
+    {
+        "id": "sakon-nakhon",
+        "name": "Sakon Nakhon",
+        "slogan": "King of Indigo",
+        "description": "Renowned for 'Kram' (Indigo) dyed textiles. The natural fermentation process creates deep, lasting blue shades. The fabric often carries a natural fragrance from the indigo plant and is believed to protect against UV rays.",
+        "silk_pattern": "Indigo Dyed Silk",
+        "technique": "Natural Indigo Fermentation",
+        "ai_tags": [
+            "Indigo",
+            "Blue",
+            "Scented",
+            "Natural",
+            "UV Protection"
+        ],
+        "image_url": "/images/silk/Sakon Nakhon1.png",
+        "video_url": "/video/13. Sakon Nakhon.mp4"
+    },
+    {
+        "id": "udon-thani",
+        "name": "Udon Thani",
+        "slogan": "Pattern of the Clay Pot",
+        "description": "Inspired by the Ban Chiang archaeological site, Udon Thani silk often features swirls and geometric patterns mimicking ancient pottery. The 'Khid' weaving technique is also prominent here.",
+        "silk_pattern": "Ban Chiang Pottery Pattern",
+        "technique": "Khid (Continuous Supplementary Weft)",
+        "ai_tags": [
+            "History",
+            "Pottery",
+            "Khid",
+            "Swirls",
+            "Ancient"
+        ],
+        "image_url": "/images/silk/Udon Thani1.png",
+        "video_url": "/video/19.Udon Thani.mp4"
+    },
+    {
+        "id": "chaiyaphum",
+        "name": "Chaiyaphum",
+        "slogan": "The Field of Victory",
+        "description": "Known for 'Ban Khwao' silk, considered some of the finest in Thailand. The weaving produces incredibly smooth execution of Mudmee patterns with a distinct focus on natural simplicity and elegance.",
+        "silk_pattern": "Mee Khon Naree",
+        "technique": "Mudmee with Fine Silk Threads",
+        "ai_tags": [
+            "Smooth",
+            "Ban Khwao",
+            "Fine Silk",
+            "Elegant",
+            "Traditional"
+        ],
+        "image_url": "/images/silk/Chaiyaphum1.png",
+        "video_url": "/video/4. Chaiyaphum.mp4"
+    },
+    {
+        "id": "nong-khai",
+        "name": "Nong Khai",
+        "slogan": "Naga of the Mekong",
+        "description": "Situated on the Mekong River, the patterns here are heavily influenced by the 'Naga' (mythical serpent). The 7-headed Naga pattern is a signature, symbolizing protection and prosperity.",
+        "silk_pattern": "Seven-Headed Naga",
+        "technique": "Jok (Discontinuous Supplementary Weft)",
+        "ai_tags": [
+            "Naga",
+            "Mekong",
+            "River",
+            "Mythology",
+            "Protection"
+        ],
+        "image_url": "/images/silk/Nong Khai1.png",
+        "video_url": "/video/15.Nong Khai.mp4"
+    },
+    {
+        "id": "loei",
+        "name": "Loei",
+        "slogan": "Sea of Mountains",
+        "description": "With a cooler climate, Loei is famous for its cotton and silk blends. The specific 'Dok Fai Ban' (Blooming Cotton) pattern reflects the province's natural flora and mountainous terrain.",
+        "silk_pattern": "Dok Fai Ban (Cotton Flower)",
+        "technique": "Native Cotton Weaving",
+        "ai_tags": [
+            "Mountain",
+            "Cotton",
+            "Flower",
+            "Cold",
+            "Nature"
+        ],
+        "image_url": "/images/silk/Loei1.png",
+        "video_url": "/video/11. Loei.mp4"
+    },
+    {
+        "id": "bueng-kan",
+        "name": "Bueng Kan",
+        "slogan": "New Life of Isan",
+        "description": "Thailand's newest province creates distinct identity through 'Mak Beng' patterns, inspired by offering bowls used in Buddhist rituals. They also utilize natural dyes from the Mekong mud.",
+        "silk_pattern": "Mak Beng Pattern",
+        "technique": "Mud Dyeing & Religious Motifs",
+        "ai_tags": [
+            "New",
+            "Ritual",
+            "Mud Dye",
+            "Faith",
+            "Mekong"
+        ],
+        "image_url": "/images/silk/Bueng Kan1.png",
+        "video_url": "/video/7. Bueng Kan.mp4"
+    },
+    {
+        "id": "nakhon-phanom",
+        "name": "Nakhon Phanom",
+        "slogan": "City of Mountains",
+        "description": "Home to the Tai Yor ethnic group, creating the 'Muk' fabric. This involves a supplementary warp technique that creates geometric diamonds and squares, often used for official vestments.",
+        "silk_pattern": "Muk Nakhon",
+        "technique": "Muk (Supplementary Warp)",
+        "ai_tags": [
+            "Tai Yor",
+            "Muk",
+            "Geometric",
+            "Diamond",
+            "Official"
+        ],
+        "image_url": "/images/silk/Nakhon Phanom1.png",
+        "video_url": "/video/5.Nakhon Phanom.mp4"
+    },
+    {
+        "id": "mukdahan",
+        "name": "Mukdahan",
+        "slogan": "Pearl of the Mekong",
+        "description": "Influenced by multiple tribes, the 'Kaew Mukda' pattern combines five auspicious designs: Naga, lantern, flower, and geometric forms, representing the diversity of the province.",
+        "silk_pattern": "Kaew Mukda",
+        "technique": "Composite Pattern Weaving",
+        "ai_tags": [
+            "Pearl",
+            "Five Tribes",
+            "Diversity",
+            "Auspicious",
+            "Complex"
+        ],
+        "image_url": "/images/silk/Mukdahan1.png",
+        "video_url": "/video/18. Mukdahan.mp4"
+    },
+    {
+        "id": "yasothon",
+        "name": "Yasothon",
+        "slogan": "Land of Rocket Festival",
+        "description": "Famous for the 'Look Wai' (Rattan Fruit) pattern. The designs are often small, repetitive, and rythmic, reflecting the fun and energetic spirit of the Rocket Festival (Bun Bang Fai).",
+        "silk_pattern": "Look Wai (Rattan Fruit)",
+        "technique": "Small-scale Mudmee",
+        "ai_tags": [
+            "Rocket Festival",
+            "Rattan",
+            "Rhythmic",
+            "Fun",
+            "Small Pattern"
+        ],
+        "image_url": "/images/silk/Yasothon1.png",
+        "video_url": "/video/9. Yasothon.mp4"
+    },
+    {
+        "id": "amnat-charoen",
+        "name": "Amnat Charoen",
+        "slogan": "City of Dharma",
+        "description": "A province with strong Buddhist roots. The 'Kho Khing' pattern looks like ginger hooks or keys, symbolizing stability and hooking onto good fortune and mindfulness.",
+        "silk_pattern": "Kho Khing (Ginger Hook)",
+        "technique": "Traditional Ikat",
+        "ai_tags": [
+            "Dharma",
+            "Hook",
+            "Fortune",
+            "Stability",
+            "Ginger"
+        ],
+        "image_url": "/images/silk/Amnat Charoen1.png",
+        "video_url": "/video/3. Amnat Charoen.mp4"
+    },
+    {
+        "id": "ubon-ratchathani",
+        "name": "Ubon Ratchathani",
+        "slogan": "Lotus City",
+        "description": "The creator of the 'Kab Bua' (Lotus Petal) cloth. This national heritage fabric combines four techniques: Ikhat (Mudmee), Khid (Pattern), Jok (Embroidery), and Plain weave into one piece.",
+        "silk_pattern": "Kab Bua (Lotus Petal)",
+        "technique": "Mixed Technique (Vista)",
+        "ai_tags": [
+            "Lotus",
+            "Mixed Tech",
+            "National Heritage",
+            "Pink",
+            "Complex"
+        ],
+        "image_url": "/images/silk/Ubon1.png",
+        "video_url": "/video/17.Ubon Ratchathani.mp4"
+    },
+    {
+        "id": "sisaket",
+        "name": "Si Sa Ket",
+        "slogan": "Land of Castles",
+        "description": "Home to 'Pha Saew', a silk treated with 'Maklua' (Ebony fruit) to turn it deep black, then embroidered with colorful silk threads. It is durable and smells of nature.",
+        "silk_pattern": "Pha Saew (Ebony Dyed)",
+        "technique": "Ebony Dye & Embroidery",
+        "ai_tags": [
+            "Ebony",
+            "Black",
+            "Castles",
+            "Embroidery",
+            "Durable"
+        ],
+        "image_url": "/images/silk/sisaket1.png",
+        "video_url": "/video/12. Si Sa Ket.mp4"
+    },
+    {
+        "id": "surin",
+        "name": "Surin",
+        "slogan": "Land of Elephants",
+        "description": "Influenced by Khmer ancestry, Surin produces 'Hol' and 'Amprum' silk. These are extremely fine, tightly woven fabrics with intricate micro-patterns, often using natural dyes.",
+        "silk_pattern": "Hol (Khmer style)",
+        "technique": "Tight Weave & Natural Dye",
+        "ai_tags": [
+            "Elephant",
+            "Khmer",
+            "Hol",
+            "Fine Weave",
+            "Antique"
+        ],
+        "image_url": "/images/silk/Surin1.png",
+        "video_url": "/video/14.Surin.mp4"
+    },
+    {
+        "id": "roi-et",
+        "name": "Roi Et",
+        "slogan": "Land of the Golden Plain",
+        "description": "Produces the 'Lai Saket' pattern, named after the provincial capital. It represents the town's history and consists of five sub-patterns woven together in vibrant colors.",
+        "silk_pattern": "Lai Saket",
+        "technique": "Five-Pattern Mudmee",
+        "ai_tags": [
+            "Golden Plain",
+            "Vibrant",
+            "Five Patterns",
+            "History",
+            "Center"
+        ],
+        "image_url": "/images/silk/Roi Et1.png",
+        "video_url": "/video/10. Roi Et.mp4"
+    },
+    {
+        "id": "maha-sarakham",
+        "name": "Maha Sarakham",
+        "slogan": "Educational Hub",
+        "description": "The 'Soi Dok Mak' pattern is the signature here. It resembles the flower of the betel nut palm. It requires high precision in tying the Mudmee threads to create small, detailed repeating flowers.",
+        "silk_pattern": "Soi Dok Mak",
+        "technique": "Precision Ikat",
+        "ai_tags": [
+            "Education",
+            "Betel Flower",
+            "Precision",
+            "Detailed",
+            "Navel of Isan"
+        ],
+        "image_url": "/images/silk/MahaSarakham1.png",
+        "video_url": "/video/8.Maha Sarakham.mp4"
+    },
+    {
+        "id": "nong-bua-lamphu",
+        "name": "Nong Bua Lamphu",
+        "slogan": "City of Bua Ban",
+        "description": "Famous for 'Khid Mai' or Silk Khid. The patterns often feature the 'Lotus' (Bua) paying homage to the province's name. It combines the raised texture of Khid with the smoothness of silk.",
+        "silk_pattern": "Bua Sawan (Heavenly Lotus)",
+        "technique": "Silk Khid",
+        "ai_tags": [
+            "Lotus",
+            "Khid",
+            "Texture",
+            "Heavenly",
+            "Pink"
+        ],
+        "image_url": "/images/silk/Nong Bua Lam Phu1.png",
+        "video_url": "/video/16. Nong Bua Lamphu.mp4"
+    }
+]

@@ -28,7 +28,7 @@ export default function LivingSilk({ textureUrl, position, rotation, onClick, on
 
     // Custom Shader Logic Injector
     // We use useCallback to keep the function reference stable across renders
-    const handleBeforeCompile = useCallback((shader: THREE.Shader) => {
+    const handleBeforeCompile = useCallback((shader: any) => {
         shader.uniforms.uTime = uniforms.uTime;
         shader.uniforms.uHover = uniforms.uHover;
 

@@ -71,8 +71,8 @@ function SilkFrame({ data, index, count, isActive, onActive, groupRotationY }: a
                 url={data.image_url}
                 transparent
                 side={THREE.DoubleSide}
-                args={[CARD_WIDTH, CARD_HEIGHT]}
-                radius={0.1}
+                scale={[CARD_WIDTH, CARD_HEIGHT]}
+
             />
 
             {/* 3D Text Label */}
@@ -159,11 +159,11 @@ function Gallery({ activeIndex, setActiveIndex, setGroupRef }: any) {
     );
 }
 
-function CameraController({ activeIndex, galleryGroupRef }: { activeIndex: number | null, galleryGroupRef: React.RefObject<THREE.Group> }) {
+function CameraController({ activeIndex, galleryGroup }: { activeIndex: number | null, galleryGroup: THREE.Group | null }) {
     const vec = useMemo(() => new THREE.Vector3(), []);
 
     // Safely check if ref exists
-    const group = galleryGroupRef?.current;
+    const group = galleryGroup;
 
     useFrame((state, delta) => {
         if (activeIndex !== null && group) {
@@ -225,7 +225,7 @@ export function VirtualMuseum() {
                     </group>
 
                     {/* Camera Control uses the groupRef which is now the Group instance */}
-                    <CameraController activeIndex={activeIndex} galleryGroupRef={{ current: groupRef }} />
+                    <CameraController activeIndex={activeIndex} galleryGroup={groupRef} />
                 </Suspense>
 
                 <OrbitControls

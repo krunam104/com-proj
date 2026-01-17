@@ -4,7 +4,7 @@ import React, { useRef, useState, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text, useTexture, SpotLight } from "@react-three/drei";
 import * as THREE from "three";
-import { motion } from "framer-motion-3d"; // Optional, but let's stick to standard R3F for now for simplicity unless requested
+// import { motion } from "framer-motion-3d"; // Removed unused import causing build error
 // Actually I'll use standard springs or just lerp in useFrame for interactions to avoid extra deps if possible, 
 // strictly sticking to user request "Next.js, Tailwind CSS, and React Three Fiber".
 

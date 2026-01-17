@@ -6,6 +6,8 @@ import { MapPin, X, Info, Sparkles } from "lucide-react";
 import wisdomData from "@/data/wisdom_data.json";
 import Image from "next/image";
 
+import { silkImages } from "@/data/silkImages";
+
 // Define approximate positions for each province on the map image
 // These values are percentages { top, left } based on a standard Isan map layout
 const PROVINCE_POSITIONS: Record<string, { top: string; left: string }> = {
@@ -33,6 +35,15 @@ const PROVINCE_POSITIONS: Record<string, { top: string; left: string }> = {
 
 export function EsanSilkMap() {
     const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(null);
+    const [randomImage, setRandomImage] = useState<string | null>(null);
+
+    const handleProvinceSelect = (id: string | null) => {
+        if (id) {
+            const random = silkImages[Math.floor(Math.random() * silkImages.length)];
+            setRandomImage(random);
+        }
+        setSelectedProvinceId(id);
+    };
 
     const selectedProvince = selectedProvinceId
         ? wisdomData.find((p) => p.id === selectedProvinceId)
@@ -88,7 +99,7 @@ export function EsanSilkMap() {
                                     key={province.id}
                                     className={`absolute transform -translate-x-1/2 -translate-y-1/2 z-20 group/marker focus:outline-none`}
                                     style={{ top: pos.top, left: pos.left }}
-                                    onClick={() => setSelectedProvinceId(province.id)}
+                                    onClick={() => handleProvinceSelect(province.id)}
                                     whileHover={{ scale: 1.2 }}
                                     whileTap={{ scale: 0.9 }}
                                     initial={{ opacity: 0, scale: 0 }}
@@ -138,7 +149,7 @@ export function EsanSilkMap() {
                                     {/* Card Header Image */}
                                     <div className="relative h-48 bg-slate-200 shrink-0">
                                         <img
-                                            src={selectedProvince.image_url}
+                                            src={randomImage ? `/images/silk/${randomImage}` : selectedProvince.image_url}
                                             alt={selectedProvince.name}
                                             onError={(e) => e.currentTarget.src = "/placeholder-fabric.png"}
                                             className="w-full h-full object-cover"
@@ -146,7 +157,7 @@ export function EsanSilkMap() {
                                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
 
                                         <button
-                                            onClick={() => setSelectedProvinceId(null)}
+                                            onClick={() => handleProvinceSelect(null)}
                                             className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-colors"
                                         >
                                             <X className="w-5 h-5" />

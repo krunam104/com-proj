@@ -68,7 +68,27 @@ export function StoryModal({ isOpen, onClose, data }: StoryModalProps) {
 
                             {/* Right: Video Story */}
                             <div className="relative h-full bg-black flex flex-col">
-                                <div className="flex-1 relative flex items-center justify-center bg-black">
+                                {data.videoUrl && (data.videoUrl.includes('youtube.com') || data.videoUrl.includes('youtu.be')) ? (
+                                    <iframe
+                                        width="100%"
+                                        height="100%"
+                                        src={(() => {
+                                            const url = data.videoUrl;
+                                            const vParam = url.match(/[?&]v=([^&]+)/);
+                                            if (vParam) return `https://www.youtube.com/embed/${vParam[1]}?autoplay=1`;
+                                            const shortMatch = url.match(/youtu\.be\/([^?&]+)/);
+                                            if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}?autoplay=1`;
+                                            const embedMatch = url.match(/embed\/([^?&]+)/);
+                                            if (embedMatch) return `https://www.youtube.com/embed/${embedMatch[1]}?autoplay=1`;
+                                            return url;
+                                        })()}
+                                        title={data.name}
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        className="w-full h-full object-contain"
+                                    />
+                                ) : (
                                     <video
                                         src={data.videoUrl}
                                         className="w-full h-full object-contain"
@@ -76,22 +96,24 @@ export function StoryModal({ isOpen, onClose, data }: StoryModalProps) {
                                         autoPlay
                                         playsInline
                                     />
-                                </div>
-                                <div className="p-6 bg-slate-900/90 border-t border-white/10">
-                                    <h3 className="text-[#F59E0B] font-bold text-lg mb-2 flex items-center gap-2">
-                                        <Play size={18} className="fill-current" />
-                                        Multimedia Story
-                                    </h3>
-                                    <p className="text-slate-400 text-sm leading-relaxed">
-                                        {data.description || "Explore the rich history and meticulous craftsmanship behind this unique provincial silk pattern. Every thread tells a story of culture, tradition, and artistry passed down through generations."}
-                                    </p>
-                                </div>
+                                )}
+                            </div>
+                            <div className="p-6 bg-slate-900/90 border-t border-white/10">
+                                <h3 className="text-[#F59E0B] font-bold text-lg mb-2 flex items-center gap-2">
+                                    <Play size={18} className="fill-current" />
+                                    Multimedia Story
+                                </h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
+                                    {data.description || "Explore the rich history and meticulous craftsmanship behind this unique provincial silk pattern. Every thread tells a story of culture, tradition, and artistry passed down through generations."}
+                                </p>
                             </div>
                         </div>
 
+
                     </motion.div>
-                </div>
-            )}
-        </AnimatePresence>
+                </div >
+            )
+            }
+        </AnimatePresence >
     );
 }

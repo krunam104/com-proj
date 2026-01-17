@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Environment, Html, Loader, Stars } from "@react-three/drei";
 import * as THREE from "three";
 import SilkStand from "./SilkStand";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Import data
 import wisdomData from "../data/wisdom_data.json";
@@ -19,6 +20,7 @@ interface ProvinceData {
     technique: string;
     image_url: string;
     video_url?: string;
+    ai_tags?: string[];
 }
 
 const SceneContent = ({ onSelect }: { onSelect: (data: ProvinceData) => void }) => {
@@ -90,13 +92,40 @@ const SceneContent = ({ onSelect }: { onSelect: (data: ProvinceData) => void }) 
     );
 };
 
-import { motion, AnimatePresence } from "framer-motion";
-
 const VirtualMuseum = () => {
     const [selectedSilk, setSelectedSilk] = useState<ProvinceData | null>(null);
+    const [viewMode, setViewMode] = useState<'image' | 'video'>('image');
+
+
+    // Reset view mode when selection changes
+    useEffect(() => {
+        if (selectedSilk) {
+            setViewMode('image');
+        }
+    }, [selectedSilk]);
 
     // Close modal
     const handleClose = () => setSelectedSilk(null);
+
+    // Helper to extract YouTube ID
+    const getYouTubeEmbedUrl = (url: string) => {
+        // Clean url
+        const cleanUrl = url.trim();
+
+        // Handle standard youtube.com/watch?v=ID
+        const vParam = cleanUrl.match(/[?&]v=([^&]+)/);
+        if (vParam) return `https://www.youtube.com/embed/${vParam[1]}?autoplay=1`;
+
+        // Handle youtu.be/ID (supports ?si=...)
+        const shortMatch = cleanUrl.match(/youtu\.be\/([^?&]+)/);
+        if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}?autoplay=1`;
+
+        // Handle youtube.com/embed/ID (if legacy or direct)
+        const embedMatch = cleanUrl.match(/embed\/([^?&]+)/);
+        if (embedMatch) return `https://www.youtube.com/embed/${embedMatch[1]}?autoplay=1`;
+
+        return cleanUrl; // Fallback or direct video file
+    };
 
     return (
         <div className="relative w-full h-[100vh] bg-black">
@@ -144,7 +173,7 @@ const VirtualMuseum = () => {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="relative w-full max-w-4xl bg-white/10 border border-white/20 backdrop-blur-xl rounded-2xl p-8 text-white shadow-2xl flex flex-col md:flex-row gap-8 overflow-hidden"
+                            className="relative w-full max-w-5xl bg-white/10 border border-white/20 backdrop-blur-xl rounded-2xl p-6 text-white shadow-2xl flex flex-col md:flex-row gap-6 overflow-hidden max-h-[90vh]"
                         >
 
                             {/* Close Button */}
@@ -155,36 +184,77 @@ const VirtualMuseum = () => {
                                 ✕
                             </button>
 
-                            {/* Left: 3D View Placeholder (Or Image/Video) */}
-                            <div className="flex-1 min-h-[300px] bg-black/20 rounded-xl flex items-center justify-center relative overflow-hidden group">
-                                {selectedSilk.video_url ? (
-                                    <video
-                                        src={selectedSilk.video_url}
-                                        className="w-full h-full object-cover rounded-xl"
-                                        autoPlay
-                                        loop
-                                        muted
-                                        playsInline
-                                        controls
-                                    />
-                                ) : (
-                                    <>
+                            {/* Left: Media View (Image or Video) */}
+                            <div className="flex-[1.5] bg-black/20 rounded-xl flex flex-col relative overflow-hidden group min-h-[400px]">
+
+                                {/* Toggle Switch */}
+                                <div className="absolute top-4 left-4 z-20 flex bg-black/40 rounded-full p-1 border border-white/10 backdrop-blur-md">
+                                    <button
+                                        onClick={() => setViewMode('image')}
+                                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${viewMode === 'image'
+                                            ? "bg-white text-black shadow-lg"
+                                            : "text-white/70 hover:text-white"
+                                            }`}
+                                    >
+                                        Infographic
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('video')}
+                                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${viewMode === 'video'
+                                            ? "bg-white text-black shadow-lg"
+                                            : "text-white/70 hover:text-white"
+                                            }`}
+                                    >
+                                        Video
+                                    </button>
+                                </div>
+
+                                {/* Content Area */}
+                                <div className="flex-1 w-full h-full flex items-center justify-center bg-black/40">
+                                    {viewMode === 'video' && selectedSilk.video_url ? (
+                                        selectedSilk.video_url.includes('youtu') ? (
+                                            <iframe
+                                                width="100%"
+                                                height="100%"
+                                                src={getYouTubeEmbedUrl(selectedSilk.video_url)}
+                                                title={selectedSilk.name}
+                                                frameBorder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                className="w-full h-full object-contain rounded-xl"
+                                            />
+                                        ) : (
+                                            <video
+                                                src={selectedSilk.video_url}
+                                                className="w-full h-full object-contain rounded-xl"
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                controls
+                                            />
+                                        )
+                                    ) : (
                                         <motion.img
+                                            key={selectedSilk.image_url}
                                             src={selectedSilk.image_url}
                                             alt={selectedSilk.name}
-                                            className="w-full h-full object-cover rounded-xl"
-                                            whileHover={{ scale: 1.1 }}
-                                            transition={{ duration: 0.7 }}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.5 }}
+                                            className="w-full h-full object-contain rounded-xl"
                                         />
-                                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <span className="border border-white/50 px-4 py-2 rounded-full text-sm">360 View Coming Soon</span>
-                                        </div>
-                                    </>
-                                )}
+                                    )}
+
+                                    {/* Fallback msg if video selected but no url */}
+                                    {viewMode === 'video' && !selectedSilk.video_url && (
+                                        <div className="text-white/50 italic">No video available</div>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Right: Info */}
-                            <div className="flex-1 flex flex-col justify-center space-y-4">
+                            <div className="flex-1 flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar">
                                 <div>
                                     <h3 className="text-orange-400 font-medium tracking-widest text-sm uppercase mb-1">
                                         {selectedSilk.id.replace("-", " ")}
@@ -195,27 +265,63 @@ const VirtualMuseum = () => {
                                     <p className="text-white/60 text-lg italic">{selectedSilk.slogan}</p>
                                 </div>
 
-                                <div className="h-px w-full bg-gradient-to-r from-white/20 to-transparent my-4" />
+                                <div className="h-px w-full bg-gradient-to-r from-white/20 to-transparent my-2" />
 
-                                <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                                    <h4 className="text-indigo-300 text-sm font-bold mb-2 uppercase">The Story</h4>
+                                <div className="bg-white/5 p-5 rounded-lg border border-white/10">
+                                    <h4 className="text-indigo-300 text-sm font-bold mb-2 uppercase flex items-center gap-2">
+                                        <span className="w-1 h-4 bg-indigo-500 rounded-full"></span>
+                                        The Story
+                                    </h4>
                                     <p className="text-white/80 leading-relaxed text-sm">
                                         {selectedSilk.description}
                                     </p>
                                 </div>
 
-                                <div className="flex gap-4 text-xs font-mono text-white/50 pt-4">
-                                    <span className="border border-white/20 px-2 py-1 rounded">{selectedSilk.silk_pattern}</span>
-                                    <span className="border border-white/20 px-2 py-1 rounded">{selectedSilk.technique}</span>
+                                <div className="grid grid-cols-2 gap-3 mt-2">
+                                    <div className="bg-white/5 p-3 rounded border border-white/10">
+                                        <div className="text-xs text-white/40 uppercase mb-1">Pattern</div>
+                                        <div className="text-sm font-medium text-white/90">{selectedSilk.silk_pattern}</div>
+                                    </div>
+                                    <div className="bg-white/5 p-3 rounded border border-white/10">
+                                        <div className="text-xs text-white/40 uppercase mb-1">Technique</div>
+                                        <div className="text-sm font-medium text-white/90">{selectedSilk.technique}</div>
+                                    </div>
                                 </div>
+
+                                {selectedSilk.ai_tags && (
+                                    <div className="flex flex-wrap gap-2 pt-2">
+                                        {selectedSilk.ai_tags.map(tag => (
+                                            <span key={tag} className="text-xs font-mono px-2 py-1 rounded bg-white/10 text-white/60 border border-white/5">
+                                                #{tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                         </motion.div>
                     </div>
                 )}
             </AnimatePresence>
+
+            <style jsx global>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 6px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.05);
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.2);
+                    border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background: rgba(255, 255, 255, 0.3);
+                }
+            `}</style>
         </div>
     );
 };
 
 export default VirtualMuseum;
+

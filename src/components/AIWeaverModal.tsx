@@ -1,4 +1,6 @@
 'use client';
+// Deployment trigger: 2026-01-17
+
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';

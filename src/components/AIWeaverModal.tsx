@@ -184,29 +184,27 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    className="p-4 space-y-4"
                                 >
-                                    {/* Used a vertical stack for sidebar layout efficiency, representing the 3 logical columns of data */}
-
-                                    <div className="space-y-2">
-                                        <label className="text-sm text-slate-400 flex items-center gap-1"><Layers className="w-4 h-4" /> Base Technique</label>
-                                        <div className="flex flex-wrap gap-2">
-                                            {BUILDER_OPTIONS.Technique.map((tech) => (
-                                                <button
-                                                    key={tech}
-                                                    onClick={() => setSelectedBase(tech)}
-                                                    className={`px-3 py-1.5 text-xs md:text-sm rounded border transition-all ${selectedBase === tech
-                                                        ? 'bg-cyan-900/50 border-cyan-400 text-cyan-300'
-                                                        : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'
-                                                        }`}
-                                                >
-                                                    {tech}
-                                                </button>
-                                            ))}
+                                    <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        {/* 1. Base Technique */}
+                                        <div className="space-y-2">
+                                            <label className="text-sm text-slate-400 flex items-center gap-1"><Layers className="w-4 h-4" /> Base Technique</label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {BUILDER_OPTIONS.Technique.map((tech) => (
+                                                    <button
+                                                        key={tech}
+                                                        onClick={() => setSelectedBase(tech)}
+                                                        className={`px-3 py-1.5 text-xs md:text-sm rounded border transition-all ${selectedBase === tech
+                                                            ? 'bg-cyan-900/50 border-cyan-400 text-cyan-300'
+                                                            : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'
+                                                            }`}
+                                                    >
+                                                        {tech}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {/* 2. Mood Style */}
                                         <div className="space-y-2">
                                             <label className="text-sm text-slate-400 flex items-center gap-1"><Sparkles className="w-4 h-4" /> Mood</label>
@@ -368,6 +366,6 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

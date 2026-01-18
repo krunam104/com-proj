@@ -12,6 +12,30 @@ const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
     ssr: false,
 });
 
+// Image Mapping for Provinces
+const PROVINCE_SILK_IMAGES: Record<string, string> = {
+    "Khon Kaen": "/images/silk/khonkaen1.png",
+    "Chaiyaphum": "/images/silk/Chaiyaphum1.png",
+    "Nakhon Ratchasima": "/images/silk/korat1.png",
+    "Nong Bua Lamphu": "/images/silk/Nong Bua Lam Phu1.png",
+    "Maha Sarakham": "/images/silk/MahaSarakham1.png",
+    "Surin": "/images/silk/Surin1.png",
+    "Kalasin": "/images/silk/Kalasin1.png",
+    "Sakon Nakhon": "/images/silk/Sakon Nakhon1.png",
+    "Buriram": "/images/silk/burirum1.png",
+    "Sisaket": "/images/silk/sisaket1.png",
+    "Mukdahan": "/images/silk/Mukdahan1.png",
+    "Loei": "/images/silk/Loei1.png",
+    "Nong Khai": "/images/silk/Nong Khai1.png",
+    "Bueng Kan": "/images/silk/Bueng Kan1.png",
+    "Nakhon Phanom": "/images/silk/Nakhon Phanom1.png",
+    "Udon Thani": "/images/silk/Udon Thani1.png",
+    "Roi Et": "/images/silk/Roi Et1.png",
+    "Yasothon": "/images/silk/Yasothon1.png",
+    "Amnat Charoen": "/images/silk/Amnat Charoen1.png",
+    "Ubon Ratchathani": "/images/silk/Ubon1.png"
+};
+
 export function UltimateGraph() {
     const fgRef = useRef<any>(null);
     const [nodes, setNodes] = useState(fullGraphData.nodes);
@@ -199,7 +223,13 @@ export function UltimateGraph() {
 
                         {/* Hero Image */}
                         <div className="relative w-full h-64 bg-slate-800 shrink-0 overflow-hidden group">
-                            {selectedNode.img ? (
+                            {selectedNode.group === 'province' && PROVINCE_SILK_IMAGES[selectedNode.name] ? (
+                                <img
+                                    src={PROVINCE_SILK_IMAGES[selectedNode.name]}
+                                    alt={selectedNode.name}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                            ) : selectedNode.img ? (
                                 <img src={selectedNode.img} alt={selectedNode.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-700">

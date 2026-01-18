@@ -185,7 +185,7 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
                                 >
-                                    <div className="p-3 grid grid-cols-1 md:grid-cols-3 gap-2">
+                                    <div className="p-3 grid grid-cols-1 md:grid-cols-3 gap-2 max-h-[250px] overflow-y-auto custom-scrollbar">
                                         {/* 1. Base Technique */}
                                         <div className="space-y-1">
                                             <label className="text-xs text-slate-400 flex items-center gap-1"><Layers className="w-3 h-3" /> Base Technique</label>

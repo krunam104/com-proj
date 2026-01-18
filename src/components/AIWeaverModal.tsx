@@ -185,16 +185,16 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
                                 >
-                                    <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="p-3 grid grid-cols-1 md:grid-cols-3 gap-2">
                                         {/* 1. Base Technique */}
-                                        <div className="space-y-2">
-                                            <label className="text-sm text-slate-400 flex items-center gap-1"><Layers className="w-4 h-4" /> Base Technique</label>
-                                            <div className="flex flex-wrap gap-2">
+                                        <div className="space-y-1">
+                                            <label className="text-xs text-slate-400 flex items-center gap-1"><Layers className="w-3 h-3" /> Base Technique</label>
+                                            <div className="flex flex-wrap gap-1">
                                                 {BUILDER_OPTIONS.Technique.map((tech) => (
                                                     <button
                                                         key={tech}
                                                         onClick={() => setSelectedBase(tech)}
-                                                        className={`px-3 py-1.5 text-xs md:text-sm rounded border transition-all ${selectedBase === tech
+                                                        className={`px-2 py-1 text-[10px] md:text-xs rounded border transition-all ${selectedBase === tech
                                                             ? 'bg-cyan-900/50 border-cyan-400 text-cyan-300'
                                                             : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'
                                                             }`}
@@ -206,14 +206,14 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                         </div>
 
                                         {/* 2. Mood Style */}
-                                        <div className="space-y-2">
-                                            <label className="text-sm text-slate-400 flex items-center gap-1"><Sparkles className="w-4 h-4" /> Mood</label>
-                                            <div className="flex flex-wrap gap-2">
+                                        <div className="space-y-1">
+                                            <label className="text-xs text-slate-400 flex items-center gap-1"><Sparkles className="w-3 h-3" /> Mood</label>
+                                            <div className="flex flex-wrap gap-1">
                                                 {BUILDER_OPTIONS.Mood.map((mood) => (
                                                     <button
                                                         key={mood}
                                                         onClick={() => setSelectedMood(mood)}
-                                                        className={`px-3 py-1.5 text-xs md:text-sm rounded border transition-all ${selectedMood === mood
+                                                        className={`px-2 py-1 text-[10px] md:text-xs rounded border transition-all ${selectedMood === mood
                                                             ? 'bg-purple-900/50 border-purple-400 text-purple-300'
                                                             : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'
                                                             }`}
@@ -225,14 +225,14 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                         </div>
 
                                         {/* 3. Color Tone */}
-                                        <div className="space-y-2">
-                                            <label className="text-sm text-slate-400 flex items-center gap-1"><Palette className="w-4 h-4" /> Color</label>
-                                            <div className="flex flex-wrap gap-2">
+                                        <div className="space-y-1">
+                                            <label className="text-xs text-slate-400 flex items-center gap-1"><Palette className="w-3 h-3" /> Color</label>
+                                            <div className="flex flex-wrap gap-1">
                                                 {BUILDER_OPTIONS.Color.map((color) => (
                                                     <button
                                                         key={color}
                                                         onClick={() => setSelectedColor(color)}
-                                                        className={`px-3 py-1.5 text-xs md:text-sm rounded border transition-all ${selectedColor === color
+                                                        className={`px-2 py-1 text-[10px] md:text-xs rounded border transition-all ${selectedColor === color
                                                             ? 'bg-amber-900/50 border-amber-400 text-amber-300'
                                                             : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'
                                                             }`}

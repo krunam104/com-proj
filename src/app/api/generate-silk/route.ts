@@ -12,7 +12,7 @@ export async function POST(request: Request) {
         if (!apiKey) {
             console.error("AI Weaver Error: STABILITY_API_KEY is missing from environment variables.");
             return NextResponse.json(
-                { error: 'Missing Stability API Key. Check server logs.' },
+                { error: 'Missing Stability API Key. Please add STABILITY_API_KEY to your deployment environment variables.' },
                 { status: 500 }
             );
         }

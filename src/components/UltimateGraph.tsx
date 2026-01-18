@@ -115,8 +115,44 @@ export function UltimateGraph() {
         }
     }, []);
 
+    const [categoryImage, setCategoryImage] = useState<string | null>(null);
+
+    // Helper to get random image for a category
+    const getCategoryRandomImage = (categoryId: string) => {
+        // Find all links where source is this category
+        const relatedProvinces = fullGraphData.links
+            .filter(link => link.source === categoryId)
+            .map(link => link.target);
+
+        // Find province nodes for these IDs
+        const provinceNodes = fullGraphData.nodes.filter(node =>
+            relatedProvinces.includes(node.id) && node.group === 'province'
+        );
+
+        // Get images
+        const availableImages: string[] = [];
+        provinceNodes.forEach(node => {
+            const img = PROVINCE_SILK_IMAGES[node.name];
+            if (img) availableImages.push(img);
+        });
+
+        if (availableImages.length > 0) {
+            const randomIndex = Math.floor(Math.random() * availableImages.length);
+            return availableImages[randomIndex];
+        }
+        return null;
+    };
+
     const handleNodeClick = (node: any) => {
         setSelectedNode(node);
+
+        // If category is clicked, set a random image
+        if (node.group === 'category') {
+            const randomImg = getCategoryRandomImage(node.id);
+            setCategoryImage(randomImg);
+        } else {
+            setCategoryImage(null);
+        }
 
         // Focus camera on node
         if (fgRef.current) {
@@ -226,6 +262,12 @@ export function UltimateGraph() {
                             {selectedNode.group === 'province' && PROVINCE_SILK_IMAGES[selectedNode.name] ? (
                                 <img
                                     src={PROVINCE_SILK_IMAGES[selectedNode.name]}
+                                    alt={selectedNode.name}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                            ) : selectedNode.group === 'category' && categoryImage ? (
+                                <img
+                                    src={categoryImage}
                                     alt={selectedNode.name}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />

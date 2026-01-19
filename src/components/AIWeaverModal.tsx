@@ -49,8 +49,7 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    // Builder State
-
+    // Builder State (Always visible)
     const [selectedBase, setSelectedBase] = useState<string>('');
     const [selectedMood, setSelectedMood] = useState<string>('');
     const [selectedColor, setSelectedColor] = useState<string>('');
@@ -154,40 +153,45 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                 </button>
 
                 {/* --- LEFT: CONTROLS --- */}
-                <div className="w-full md:w-2/5 p-6 border-b md:border-b-0 md:border-r border-cyan-500/20 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
+                <div className="w-full md:w-2/5 p-5 border-b md:border-b-0 md:border-r border-cyan-500/20 flex flex-col gap-3 overflow-y-auto custom-scrollbar max-h-full">
 
                     {/* Header */}
-                    <div className="space-y-1">
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent flex items-center gap-2">
-                            <Sparkles className="w-6 h-6 text-cyan-400" />
+                    <div className="space-y-0.5 shrink-0">
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent flex items-center gap-2">
+                            <Sparkles className="w-5 h-5 text-cyan-300" />
                             The AI Weaver
                         </h2>
-                        <p className="text-slate-400 text-sm">Architectural Isan Silk Intelligence</p>
+                        <p className="text-slate-300 text-xs font-medium tracking-wide">Architectural Isan Silk Intelligence</p>
                     </div>
 
                     {/* --- FEATURE B: Interactive Prompt Builder --- */}
-                    <div className="border border-slate-700 rounded-lg overflow-hidden bg-slate-900/40 p-5">
-                        <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-700/50">
-                            <Wand2 className="w-5 h-5 text-purple-400" />
-                            <h3 className="text-cyan-100 font-bold text-base">Builder Options</h3>
+                    <div className="bg-slate-900/80 rounded-xl overflow-hidden border border-cyan-500/30 shadow-lg ring-1 ring-white/5 shrink-0">
+                        <div className="px-4 py-2 border-b border-cyan-500/20 flex items-center justify-between bg-gradient-to-r from-slate-800 to-slate-900/50">
+                            <div className="flex items-center gap-2 text-cyan-200 font-bold tracking-tight">
+                                <Wand2 className="w-3.5 h-3.5 text-purple-400" />
+                                <span className="text-sm">Custom Prompt Builder (ตัวช่วยสร้างคำสั่ง)</span>
+                            </div>
+                            <span className="text-[9px] uppercase tracking-wider text-cyan-400/80 font-mono font-bold border border-cyan-500/30 px-1.5 py-0.5 rounded-full bg-cyan-950/30">Active</span>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="p-3 grid grid-cols-1 gap-3">
                             {/* 1. Base Technique */}
-                            <div className="space-y-2">
-                                <label className="text-sm text-cyan-200 flex items-center gap-2 font-semibold bg-slate-800/80 w-fit px-3 py-1 rounded-md border border-slate-700">
-                                    <Layers className="w-4 h-4" /> Base Technique
-                                </label>
-                                <div className="grid grid-cols-3 gap-2">
+                            <div className="space-y-1.5">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                    <div className="p-1 rounded-md bg-cyan-500/20 ring-1 ring-cyan-500/40">
+                                        <Layers className="w-3 h-3 text-cyan-300" />
+                                    </div>
+                                    <label className="text-[10px] font-bold text-slate-200 uppercase tracking-wider">Base Structure (โครงสร้างหลัก)</label>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
                                     {BUILDER_OPTIONS.Technique.map((tech) => (
                                         <button
                                             key={tech}
                                             onClick={() => setSelectedBase(tech)}
-                                            className={`px-3 py-3 text-sm font-medium rounded-lg border transition-all truncate text-center ${selectedBase === tech
-                                                ? 'bg-cyan-900/80 border-cyan-400 text-white shadow-[0_0_15px_rgba(34,211,238,0.4)] scale-105'
-                                                : 'bg-slate-800 border-slate-600 text-slate-200 hover:border-slate-400 hover:bg-slate-700 hover:text-white'
+                                            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all duration-200 ${selectedBase === tech
+                                                ? 'bg-cyan-500/30 border-cyan-400 text-white shadow-[0_0_15px_rgba(34,211,238,0.3)] scale-[1.02]'
+                                                : 'bg-slate-800/80 border-slate-600/50 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-500'
                                                 }`}
-                                            title={tech}
                                         >
                                             {tech}
                                         </button>
@@ -196,20 +200,22 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                             </div>
 
                             {/* 2. Mood Style */}
-                            <div className="space-y-2">
-                                <label className="text-sm text-purple-200 flex items-center gap-2 font-semibold bg-slate-800/80 w-fit px-3 py-1 rounded-md border border-slate-700">
-                                    <Sparkles className="w-4 h-4" /> Mood
-                                </label>
-                                <div className="grid grid-cols-3 gap-2">
+                            <div className="space-y-1.5">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                    <div className="p-1 rounded-md bg-purple-500/20 ring-1 ring-purple-500/40">
+                                        <Sparkles className="w-3 h-3 text-purple-300" />
+                                    </div>
+                                    <label className="text-[10px] font-bold text-slate-200 uppercase tracking-wider">Aesthetic Mood (อารมณ์ของภาพ)</label>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
                                     {BUILDER_OPTIONS.Mood.map((mood) => (
                                         <button
                                             key={mood}
                                             onClick={() => setSelectedMood(mood)}
-                                            className={`px-3 py-3 text-sm font-medium rounded-lg border transition-all truncate text-center ${selectedMood === mood
-                                                ? 'bg-purple-900/80 border-purple-400 text-white shadow-[0_0_15px_rgba(192,132,252,0.4)] scale-105'
-                                                : 'bg-slate-800 border-slate-600 text-slate-200 hover:border-slate-400 hover:bg-slate-700 hover:text-white'
+                                            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all duration-200 ${selectedMood === mood
+                                                ? 'bg-purple-500/30 border-purple-400 text-white shadow-[0_0_15px_rgba(192,132,252,0.3)] scale-[1.02]'
+                                                : 'bg-slate-800/80 border-slate-600/50 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-500'
                                                 }`}
-                                            title={mood}
                                         >
                                             {mood}
                                         </button>
@@ -218,22 +224,24 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                             </div>
 
                             {/* 3. Color Tone */}
-                            <div className="space-y-2">
-                                <label className="text-sm text-amber-200 flex items-center gap-2 font-semibold bg-slate-800/80 w-fit px-3 py-1 rounded-md border border-slate-700">
-                                    <Palette className="w-4 h-4" /> Color
-                                </label>
-                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                            <div className="space-y-1.5">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                    <div className="p-1 rounded-md bg-amber-500/20 ring-1 ring-amber-500/40">
+                                        <Palette className="w-3 h-3 text-amber-300" />
+                                    </div>
+                                    <label className="text-[10px] font-bold text-slate-200 uppercase tracking-wider">Color Palette (โทนสี)</label>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
                                     {BUILDER_OPTIONS.Color.map((color) => (
                                         <button
                                             key={color}
                                             onClick={() => setSelectedColor(color)}
-                                            className={`px-3 py-3 text-sm font-medium rounded-lg border transition-all truncate text-center ${selectedColor === color
-                                                ? 'bg-amber-900/80 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.4)] scale-105'
-                                                : 'bg-slate-800 border-slate-600 text-slate-200 hover:border-slate-400 hover:bg-slate-700 hover:text-white'
+                                            className={`px-3 py-1.5 text-xs font-medium rounded-md border transition-all duration-200 ${selectedColor === color
+                                                ? 'bg-amber-500/30 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.3)] scale-[1.02]'
+                                                : 'bg-slate-800/80 border-slate-600/50 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-500'
                                                 }`}
-                                            title={color}
                                         >
-                                            {color.split(' ')[0]}
+                                            {color}
                                         </button>
                                     ))}
                                 </div>
@@ -242,8 +250,11 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                     </div>
 
                     {/* --- FEATURE A: Quick Suggestion Chips --- */}
-                    <div className="space-y-2">
-                        <label className="text-cyan-400 text-sm font-semibold uppercase tracking-wider">Quick Suggestions (Preset Styles)</label>
+                    <div className="space-y-2 shrink-0">
+                        <label className="text-cyan-300 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                            <Sparkles className="w-3.5 h-3.5" />
+                            Quick Suggestions (สไตล์แนะนำ)
+                        </label>
                         <div className="grid grid-cols-2 gap-2">
                             {SAMPLE_PROMPTS.map((item, idx) => (
                                 <motion.button
@@ -251,12 +262,12 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => handleApplyStyle(item.prompt)}
-                                    className="relative group overflow-hidden rounded-lg p-[1px]"
+                                    className="relative group overflow-hidden rounded-lg p-[1px] shadow-sm"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 opacity-60 group-hover:opacity-100 transition-opacity" />
-                                    <div className="relative h-full bg-slate-900/90 hover:bg-slate-800/90 rounded-lg p-3 flex flex-col items-center justify-center text-center transition-colors">
-                                        <span className="text-white text-sm font-medium">{item.style}</span>
-                                        <span className="text-xs text-slate-400">{item.label}</span>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <div className="relative h-full bg-slate-900/90 group-hover:bg-slate-800/90 rounded-lg p-2.5 flex flex-col items-center justify-center text-center transition-colors">
+                                        <span className="text-white text-xs font-bold tracking-wide">{item.style}</span>
+                                        <span className="text-[10px] text-slate-300 group-hover:text-white transition-colors truncate w-full">{item.label}</span>
                                     </div>
                                 </motion.button>
                             ))}
@@ -264,22 +275,22 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                     </div>
 
                     {/* Text Area */}
-                    <div className="space-y-2 flex-grow">
-                        <label className="text-cyan-400 text-sm font-semibold uppercase tracking-wider">Prompt Interface</label>
+                    <div className="space-y-1.5 flex-grow min-h-0 flex flex-col">
+                        <label className="text-cyan-300 text-xs font-bold uppercase tracking-wider">Prompt Interface (พื้นที่ใส่คำสั่ง)</label>
                         <textarea
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
                             placeholder="Input your vision or use the tools above..."
-                            className="w-full h-32 bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-base text-slate-100 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 resize-none placeholder-slate-600 transition-all font-mono"
+                            className="w-full flex-grow min-h-[80px] bg-slate-950/70 border border-slate-600 rounded-lg p-3 text-sm text-white focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 resize-none placeholder-slate-500 transition-all font-mono shadow-inner custom-scrollbar"
                         />
                     </div>
 
                     {/* Action Button */}
-                    <div className="pt-2">
+                    <div className="pt-1 shrink-0">
                         <button
                             onClick={handleGenerate}
                             disabled={isLoading || !prompt}
-                            className={`w-full py-5 rounded-xl font-bold text-xl tracking-wide uppercase transition-all shadow-lg flex items-center justify-center gap-2
+                            className={`w-full py-2.5 rounded-lg font-bold text-base tracking-wide uppercase transition-all shadow-lg flex items-center justify-center gap-2
                                 ${isLoading
                                     ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
                                     : 'bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white shadow-cyan-900/20 hover:shadow-cyan-500/40'
@@ -287,7 +298,7 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                         >
                             {isLoading ? (
                                 <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
@@ -295,13 +306,13 @@ export default function AIWeaverModal({ isOpen, onClose }: AIWeaverModalProps) {
                                 </>
                             ) : (
                                 <>
-                                    <Wand2 className="w-5 h-5" />
+                                    <Wand2 className="w-4 h-4" />
                                     Generate Silk
                                 </>
                             )}
                         </button>
                         {error && (
-                            <p className="mt-3 text-red-400 text-sm text-center animate-pulse">{error}</p>
+                            <p className="mt-2 text-red-400 text-xs text-center animate-pulse">{error}</p>
                         )}
                     </div>
                 </div>

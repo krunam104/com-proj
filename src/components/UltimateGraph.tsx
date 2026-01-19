@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, ChevronRight, Wand2, Loader2, Share2, Info } from "lucide-react";
-import { forceCollide } from "d3-force";
 import { fullGraphData, GraphNode } from "@/data/fullGraphData";
 import AIWeaverModal from "./AIWeaverModal";
 
@@ -68,103 +67,51 @@ export function UltimateGraph() {
         }
     }, []);
 
-
-
-    // Initial Zoom and Physics Setup
+    // Tick for auto-rotation simulation (rotating the camera lookAt)
     useEffect(() => {
-        if (fgRef.current) {
-            // Apply custom forces for better spreading
-            // Collision Force: Essential for preventing text overlap
-            fgRef.current.d3Force('collide', forceCollide((node: any) => {
-                const baseSize = node.group === 'center' ? 50 : 35; // Visual hierarchy size
-                const textLength = (node.name.length * 12); // Increased char width multiplier
-                return baseSize + textLength + 30; // Large collision buffer
-            }).strength(1)); // Max stiffness for rigid separation
-
-            fgRef.current.d3Force('charge').strength(-6000); // Aggressive Repulsion
-            fgRef.current.d3Force('link').distance(300); // Long connections for spacing
-            fgRef.current.d3Force('center').strength(0.05); // Weak centering to allow spread
-
-            // Initial zoom
-            setTimeout(() => {
-                fgRef.current.zoom(0.55, 1000); // Zoom out further to see the spread graph
-            }, 500);
-        }
+        // Placeholder for future 3D rotation logic if needed
     }, []);
 
     // Custom Node Rendering
     const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
         const { x, y, group, val } = node;
         if (!Number.isFinite(x) || !Number.isFinite(y)) return;
-
-        // VISUAL UPDATE: Macro Nodes
-        const size = group === 'center' ? 45 : 30; // Restored and refined sizes
+        const size = group === 'center' ? 8 : 5;
 
         // Pulse effect calculation
         const time = Date.now();
         const pulse = (Math.sin(time / 400) + 1) / 2; // 0 to 1
-        const glowSize = size + (pulse * 8);
+        const glowSize = size + (pulse * 3);
 
-        // Color Logic & styling
+        // Color Logic
         let color = "#FFFFFF";
-        let strokeColor = "#ffffff";
-        if (group === "province") { color = "#F59E0B"; strokeColor = "#FCD34D"; } // Gold
-        if (group === "category") { color = "#06B6D4"; strokeColor = "#67E8F9"; } // Cyan
-        if (group === "center") { color = "#FFFFFF"; strokeColor = "#94A3B8"; }
+        if (group === "province") color = "#F59E0B"; // Gold
+        if (group === "category") color = "#06B6D4"; // Cyan
+        if (group === "center") color = "#FFFFFF";
 
-        // Draw Glow - Reduced radius to prevent muddy look
-        const gradient = ctx.createRadialGradient(x, y, size * 0.8, x, y, glowSize * 1.5);
+        // Draw Glow
+        const gradient = ctx.createRadialGradient(x, y, size * 0.5, x, y, glowSize * 2);
         gradient.addColorStop(0, color);
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
         ctx.beginPath();
-        ctx.arc(x, y, glowSize * 1.5, 0, 2 * Math.PI, false);
+        ctx.arc(x, y, glowSize * 2, 0, 2 * Math.PI, false);
         ctx.fillStyle = gradient;
         ctx.fill();
 
-        // Draw Core Node with Stroke
+        // Draw Core Node
         ctx.beginPath();
         ctx.arc(x, y, size, 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
         ctx.fill();
 
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = strokeColor;
-        ctx.stroke();
-
-        // Draw Label - VISUAL UPDATE: Premium Typography
-        const shouldShowLabel = globalScale > 0.4 || group === 'center' || group === 'category' || group === 'province';
-
-        if (shouldShowLabel) {
-            const fontSize = 14; // Standard readable size
-            ctx.font = `${group === 'center' ? 'bold' : '500'} ${fontSize}px "Inter", sans-serif`;
+        // Draw Label if zoomed in or vital center
+        if (globalScale > 1.2 || group === 'center' || group === 'category') {
+            ctx.font = `${group === 'center' ? 'bold 6px' : '4px'} Sans-Serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-
-            const textWidth = ctx.measureText(node.name).width;
-            const bgPadding = 16; // More padding
-            const bgHeight = fontSize + 16;
-
-            // Refined Text Background
-            ctx.fillStyle = 'rgba(2, 6, 23, 0.95)'; // Almost black, high opacity
-
-            // Pill shape background
-            const bgX = x - textWidth / 2 - bgPadding / 2;
-            const bgY = y + size + 12;
-            const bgW = textWidth + bgPadding;
-
-            ctx.beginPath();
-            ctx.roundRect(bgX, bgY, bgW, bgHeight, 8);
-            ctx.fill();
-
-            // Border for label
-            ctx.strokeStyle = strokeColor;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            // Text
-            ctx.fillStyle = '#F8FAFC'; // Bright white text
-            ctx.fillText(node.name, x, bgY + bgHeight / 2 + 1);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillText(node.name, x, y + size + 4);
         }
     }, []);
 
@@ -210,7 +157,7 @@ export function UltimateGraph() {
         // Focus camera on node
         if (fgRef.current) {
             fgRef.current.centerAt(node.x, node.y, 1000);
-            fgRef.current.zoom(3, 1000); // Closer zoom on click
+            fgRef.current.zoom(2.5, 1000);
         }
     };
 
@@ -263,13 +210,11 @@ export function UltimateGraph() {
                     onNodeClick={handleNodeClick}
                     backgroundColor="rgba(0,0,0,0)"
                     linkColor={() => "rgba(255,255,255,0.15)"}
-                    d3AlphaDecay={0.02} // Faster settling
-                    d3VelocityDecay={0.3}
-                    cooldownTicks={100} // Warmup simulation before first render
-                    onEngineStop={() => fgRef.current.zoomToFit(400, 50)} // Center nicely after warmup
+                    d3AlphaDecay={0.02}
+                    d3VelocityDecay={0.08}
                     enableZoomInteraction={true}
-                    minZoom={0.1}
-                    maxZoom={4}
+                    minZoom={0.5}
+                    maxZoom={5}
                 />
             </div>
 

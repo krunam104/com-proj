@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, ChevronRight, Wand2, Loader2, Share2, Info } from "lucide-react";
+import { forceCollide } from "d3-force";
 import { fullGraphData, GraphNode } from "@/data/fullGraphData";
 import AIWeaverModal from "./AIWeaverModal";
 
@@ -67,21 +68,41 @@ export function UltimateGraph() {
         }
     }, []);
 
-    // Tick for auto-rotation simulation (rotating the camera lookAt)
+
+
+    // Initial Zoom and Physics Setup
     useEffect(() => {
-        // Placeholder for future 3D rotation logic if needed
+        if (fgRef.current) {
+            // Apply custom forces for better spreading
+            // Collision Force: Essential for preventing text overlap
+            fgRef.current.d3Force('collide', forceCollide((node: any) => {
+                const baseSize = node.group === 'center' ? 45 : 30; // Increased size by 10px
+                const textLength = (node.name.length * 8); // Approx char width for Arial 14
+                return baseSize + textLength + 10; // Collision buffer
+            }).strength(1)); // Max stiffness
+
+            fgRef.current.d3Force('charge').strength(-2000); // Reduced Repulsion for tighter graph
+            fgRef.current.d3Force('link').distance(250); // Shorter links for compact layout
+
+            // Initial zoom
+            setTimeout(() => {
+                fgRef.current.zoom(0.7, 1000); // Zoom out to fit the giant graph
+            }, 500);
+        }
     }, []);
 
     // Custom Node Rendering
     const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
         const { x, y, group, val } = node;
         if (!Number.isFinite(x) || !Number.isFinite(y)) return;
-        const size = group === 'center' ? 8 : 5;
+
+        // VISUAL UPDATE: Macro Nodes
+        const size = group === 'center' ? 45 : 30; // Increased node size by 10px
 
         // Pulse effect calculation
         const time = Date.now();
         const pulse = (Math.sin(time / 400) + 1) / 2; // 0 to 1
-        const glowSize = size + (pulse * 3);
+        const glowSize = size + (pulse * 8); // Huge glow
 
         // Color Logic
         let color = "#FFFFFF";
@@ -90,12 +111,12 @@ export function UltimateGraph() {
         if (group === "center") color = "#FFFFFF";
 
         // Draw Glow
-        const gradient = ctx.createRadialGradient(x, y, size * 0.5, x, y, glowSize * 2);
+        const gradient = ctx.createRadialGradient(x, y, size * 0.5, x, y, glowSize * 2.5);
         gradient.addColorStop(0, color);
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
         ctx.beginPath();
-        ctx.arc(x, y, glowSize * 2, 0, 2 * Math.PI, false);
+        ctx.arc(x, y, glowSize * 2.5, 0, 2 * Math.PI, false);
         ctx.fillStyle = gradient;
         ctx.fill();
 
@@ -105,13 +126,24 @@ export function UltimateGraph() {
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Draw Label if zoomed in or vital center
-        if (globalScale > 1.2 || group === 'center' || group === 'category') {
-            ctx.font = `${group === 'center' ? 'bold 6px' : '4px'} Sans-Serif`;
+        // Draw Label - VISUAL UPDATE: Giant Fonts
+        // Show labels if: zoomed in OR it's a center/category/province node
+        // Threshold lowered so labels appear even when zoomed out slightly
+        const shouldShowLabel = globalScale > 0.5 || group === 'center' || group === 'category' || group === 'province';
+
+        if (shouldShowLabel) {
+            const fontSize = 14; // Increased to 14px as requested
+            ctx.font = `${group === 'center' ? 'bold' : 'normal'} ${fontSize}px Arial, sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            ctx.fillText(node.name, x, y + size + 4);
+
+            // Text Background for readability
+            const textWidth = ctx.measureText(node.name).width;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; // Darker background
+            ctx.fillRect(x - textWidth / 2 - 8, y + size + 8, textWidth + 16, fontSize + 10);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+            ctx.fillText(node.name, x, y + size + 13 + (fontSize / 2));
         }
     }, []);
 
@@ -157,7 +189,7 @@ export function UltimateGraph() {
         // Focus camera on node
         if (fgRef.current) {
             fgRef.current.centerAt(node.x, node.y, 1000);
-            fgRef.current.zoom(2.5, 1000);
+            fgRef.current.zoom(3, 1000); // Closer zoom on click
         }
     };
 
@@ -210,11 +242,11 @@ export function UltimateGraph() {
                     onNodeClick={handleNodeClick}
                     backgroundColor="rgba(0,0,0,0)"
                     linkColor={() => "rgba(255,255,255,0.15)"}
-                    d3AlphaDecay={0.02}
-                    d3VelocityDecay={0.08}
+                    d3AlphaDecay={0.01} // Slower decay for better settling with new forces
+                    d3VelocityDecay={0.2}
                     enableZoomInteraction={true}
                     minZoom={0.5}
-                    maxZoom={5}
+                    maxZoom={6}
                 />
             </div>
 

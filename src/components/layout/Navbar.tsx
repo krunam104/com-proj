@@ -5,8 +5,18 @@ import Link from 'next/link';
 import { Home, Map as MapIcon, Box, Gamepad2, Share2, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useLanguage();
+
+    const navItems = [
+        { href: '/', icon: <MapIcon size={20} />, label: t({ th: 'สำรวจแผนที่', en: 'Explore Map' }) },
+        { href: '/wisdom-graph', icon: <Share2 size={20} />, label: t({ th: 'กราฟภูมิปัญญา', en: 'AI Graph' }) },
+        { href: '/virtual-museum', icon: <Box size={20} />, label: t({ th: 'พิพิธภัณฑ์เสมือน', en: 'Virtual Museum' }) },
+        { href: '/game/dashboard', icon: <Gamepad2 size={20} />, label: t({ th: 'ปริศนาภูมิปัญญา', en: 'Lost Wisdom' }) },
+    ];
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-amber-500/20 shadow-xl">
@@ -20,10 +30,10 @@ export function Navbar() {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-8">
-                    <NavLink href="/" icon={<MapIcon size={20} />} label="Explore Map" />
-                    <NavLink href="/wisdom-graph" icon={<Share2 size={20} />} label="AI Graph" />
-                    <NavLink href="/virtual-museum" icon={<Box size={20} />} label="Virtual Museum" />
-                    <NavLink href="/game/dashboard" icon={<Gamepad2 size={20} />} label="Lost Wisdom" />
+                    {navItems.map((item) => (
+                        <NavLink key={item.href} href={item.href} icon={item.icon} label={item.label} />
+                    ))}
+
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -45,10 +55,10 @@ export function Navbar() {
                         className="md:hidden bg-slate-900 border-b border-slate-800 overflow-hidden"
                     >
                         <div className="flex flex-col p-6 space-y-4">
-                            <MobileNavLink href="/" icon={<MapIcon size={20} />} label="Explore Map" onClick={() => setIsOpen(false)} />
-                            <MobileNavLink href="/wisdom-graph" icon={<Share2 size={20} />} label="AI Graph" onClick={() => setIsOpen(false)} />
-                            <MobileNavLink href="/virtual-museum" icon={<Box size={20} />} label="Virtual Museum" onClick={() => setIsOpen(false)} />
-                            <MobileNavLink href="/game/dashboard" icon={<Gamepad2 size={20} />} label="Lost Wisdom" onClick={() => setIsOpen(false)} />
+                            {navItems.map((item) => (
+                                <MobileNavLink key={item.href} href={item.href} icon={item.icon} label={item.label} onClick={() => setIsOpen(false)} />
+                            ))}
+
                         </div>
                     </motion.div>
                 )}

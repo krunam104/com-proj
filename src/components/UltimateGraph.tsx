@@ -76,17 +76,17 @@ export function UltimateGraph() {
             // Apply custom forces for better spreading
             // Collision Force: Essential for preventing text overlap
             fgRef.current.d3Force('collide', forceCollide((node: any) => {
-                const baseSize = node.group === 'center' ? 45 : 30; // Increased size by 10px
-                const textLength = (node.name.length * 8); // Approx char width for Arial 14
-                return baseSize + textLength + 10; // Collision buffer
-            }).strength(1)); // Max stiffness
+                const baseSize = node.group === 'center' ? 50 : 35; // Visual hierarchy size
+                const textLength = (node.name.length * 9); // Approx char width for Arial 14
+                return baseSize + textLength + 20; // Balanced collision buffer
+            }).strength(0.8)); // Slightly softer for natural movement
 
-            fgRef.current.d3Force('charge').strength(-2000); // Reduced Repulsion for tighter graph
-            fgRef.current.d3Force('link').distance(250); // Shorter links for compact layout
+            fgRef.current.d3Force('charge').strength(-3000); // Balanced Repulsion
+            fgRef.current.d3Force('link').distance(180); // Tighter connections
 
             // Initial zoom
             setTimeout(() => {
-                fgRef.current.zoom(0.7, 1000); // Zoom out to fit the giant graph
+                fgRef.current.zoom(0.8, 1000); // Optimal initial view
             }, 500);
         }
     }, []);
@@ -97,21 +97,22 @@ export function UltimateGraph() {
         if (!Number.isFinite(x) || !Number.isFinite(y)) return;
 
         // VISUAL UPDATE: Macro Nodes
-        const size = group === 'center' ? 45 : 30; // Increased node size by 10px
+        const size = group === 'center' ? 45 : 30; // Restored and refined sizes
 
         // Pulse effect calculation
         const time = Date.now();
         const pulse = (Math.sin(time / 400) + 1) / 2; // 0 to 1
-        const glowSize = size + (pulse * 8); // Huge glow
+        const glowSize = size + (pulse * 8);
 
-        // Color Logic
+        // Color Logic & styling
         let color = "#FFFFFF";
-        if (group === "province") color = "#F59E0B"; // Gold
-        if (group === "category") color = "#06B6D4"; // Cyan
-        if (group === "center") color = "#FFFFFF";
+        let strokeColor = "#ffffff";
+        if (group === "province") { color = "#F59E0B"; strokeColor = "#FCD34D"; } // Gold
+        if (group === "category") { color = "#06B6D4"; strokeColor = "#67E8F9"; } // Cyan
+        if (group === "center") { color = "#FFFFFF"; strokeColor = "#94A3B8"; }
 
         // Draw Glow
-        const gradient = ctx.createRadialGradient(x, y, size * 0.5, x, y, glowSize * 2.5);
+        const gradient = ctx.createRadialGradient(x, y, size * 0.8, x, y, glowSize * 2.5);
         gradient.addColorStop(0, color);
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
@@ -120,30 +121,49 @@ export function UltimateGraph() {
         ctx.fillStyle = gradient;
         ctx.fill();
 
-        // Draw Core Node
+        // Draw Core Node with Stroke
         ctx.beginPath();
         ctx.arc(x, y, size, 0, 2 * Math.PI, false);
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Draw Label - VISUAL UPDATE: Giant Fonts
-        // Show labels if: zoomed in OR it's a center/category/province node
-        // Threshold lowered so labels appear even when zoomed out slightly
-        const shouldShowLabel = globalScale > 0.5 || group === 'center' || group === 'category' || group === 'province';
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = strokeColor;
+        ctx.stroke();
+
+        // Draw Label - VISUAL UPDATE: Premium Typography
+        const shouldShowLabel = globalScale > 0.6 || group === 'center' || group === 'category' || group === 'province';
 
         if (shouldShowLabel) {
-            const fontSize = 14; // Increased to 14px as requested
-            ctx.font = `${group === 'center' ? 'bold' : 'normal'} ${fontSize}px Arial, sans-serif`;
+            const fontSize = 14; // Standard readable size
+            ctx.font = `${group === 'center' ? 'bold' : '500'} ${fontSize}px "Inter", sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            // Text Background for readability
             const textWidth = ctx.measureText(node.name).width;
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; // Darker background
-            ctx.fillRect(x - textWidth / 2 - 8, y + size + 8, textWidth + 16, fontSize + 10);
+            const bgPadding = 12;
+            const bgHeight = fontSize + 12;
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-            ctx.fillText(node.name, x, y + size + 13 + (fontSize / 2));
+            // Refined Text Background
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.9)'; // Deep Slate background
+
+            // Pill shape background
+            const bgX = x - textWidth / 2 - bgPadding / 2;
+            const bgY = y + size + 10;
+            const bgW = textWidth + bgPadding;
+
+            ctx.beginPath();
+            ctx.roundRect(bgX, bgY, bgW, bgHeight, 6);
+            ctx.fill();
+
+            // Border for label
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Text
+            ctx.fillStyle = '#F8FAFC'; // Bright white text
+            ctx.fillText(node.name, x, bgY + bgHeight / 2 + 1);
         }
     }, []);
 

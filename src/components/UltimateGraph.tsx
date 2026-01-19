@@ -77,16 +77,17 @@ export function UltimateGraph() {
             // Collision Force: Essential for preventing text overlap
             fgRef.current.d3Force('collide', forceCollide((node: any) => {
                 const baseSize = node.group === 'center' ? 50 : 35; // Visual hierarchy size
-                const textLength = (node.name.length * 9); // Approx char width for Arial 14
-                return baseSize + textLength + 20; // Balanced collision buffer
-            }).strength(0.8)); // Slightly softer for natural movement
+                const textLength = (node.name.length * 12); // Increased char width multiplier
+                return baseSize + textLength + 30; // Large collision buffer
+            }).strength(1)); // Max stiffness for rigid separation
 
-            fgRef.current.d3Force('charge').strength(-3000); // Balanced Repulsion
-            fgRef.current.d3Force('link').distance(180); // Tighter connections
+            fgRef.current.d3Force('charge').strength(-6000); // Aggressive Repulsion
+            fgRef.current.d3Force('link').distance(300); // Long connections for spacing
+            fgRef.current.d3Force('center').strength(0.05); // Weak centering to allow spread
 
             // Initial zoom
             setTimeout(() => {
-                fgRef.current.zoom(0.8, 1000); // Optimal initial view
+                fgRef.current.zoom(0.55, 1000); // Zoom out further to see the spread graph
             }, 500);
         }
     }, []);
@@ -111,13 +112,13 @@ export function UltimateGraph() {
         if (group === "category") { color = "#06B6D4"; strokeColor = "#67E8F9"; } // Cyan
         if (group === "center") { color = "#FFFFFF"; strokeColor = "#94A3B8"; }
 
-        // Draw Glow
-        const gradient = ctx.createRadialGradient(x, y, size * 0.8, x, y, glowSize * 2.5);
+        // Draw Glow - Reduced radius to prevent muddy look
+        const gradient = ctx.createRadialGradient(x, y, size * 0.8, x, y, glowSize * 1.5);
         gradient.addColorStop(0, color);
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
         ctx.beginPath();
-        ctx.arc(x, y, glowSize * 2.5, 0, 2 * Math.PI, false);
+        ctx.arc(x, y, glowSize * 1.5, 0, 2 * Math.PI, false);
         ctx.fillStyle = gradient;
         ctx.fill();
 
@@ -132,7 +133,7 @@ export function UltimateGraph() {
         ctx.stroke();
 
         // Draw Label - VISUAL UPDATE: Premium Typography
-        const shouldShowLabel = globalScale > 0.6 || group === 'center' || group === 'category' || group === 'province';
+        const shouldShowLabel = globalScale > 0.4 || group === 'center' || group === 'category' || group === 'province';
 
         if (shouldShowLabel) {
             const fontSize = 14; // Standard readable size
@@ -141,19 +142,19 @@ export function UltimateGraph() {
             ctx.textBaseline = 'middle';
 
             const textWidth = ctx.measureText(node.name).width;
-            const bgPadding = 12;
-            const bgHeight = fontSize + 12;
+            const bgPadding = 16; // More padding
+            const bgHeight = fontSize + 16;
 
             // Refined Text Background
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.9)'; // Deep Slate background
+            ctx.fillStyle = 'rgba(2, 6, 23, 0.95)'; // Almost black, high opacity
 
             // Pill shape background
             const bgX = x - textWidth / 2 - bgPadding / 2;
-            const bgY = y + size + 10;
+            const bgY = y + size + 12;
             const bgW = textWidth + bgPadding;
 
             ctx.beginPath();
-            ctx.roundRect(bgX, bgY, bgW, bgHeight, 6);
+            ctx.roundRect(bgX, bgY, bgW, bgHeight, 8);
             ctx.fill();
 
             // Border for label
@@ -262,11 +263,13 @@ export function UltimateGraph() {
                     onNodeClick={handleNodeClick}
                     backgroundColor="rgba(0,0,0,0)"
                     linkColor={() => "rgba(255,255,255,0.15)"}
-                    d3AlphaDecay={0.01} // Slower decay for better settling with new forces
-                    d3VelocityDecay={0.2}
+                    d3AlphaDecay={0.02} // Faster settling
+                    d3VelocityDecay={0.3}
+                    cooldownTicks={100} // Warmup simulation before first render
+                    onEngineStop={() => fgRef.current.zoomToFit(400, 50)} // Center nicely after warmup
                     enableZoomInteraction={true}
-                    minZoom={0.5}
-                    maxZoom={6}
+                    minZoom={0.1}
+                    maxZoom={4}
                 />
             </div>
 
